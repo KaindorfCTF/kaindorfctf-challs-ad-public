@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block nav %}
+    <nav class="navbar navbar-expand navbar-dark fixed-top bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                TestCentral
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse d-flex flex-row-reverse" id="navbarSupportedContent">
+                {% if current_user.is_authenticated %}
+                    <ul class="navbar-nav mb-2 mb-lg-0">
+                        {% if current_user.is_admin %}
+                            <li class="nav-item ms-2">
+                                <a href="/dashboard" class="btn btn-primary">Dashboard</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item ms-2">
+                                <a href="/profile" class="btn btn-primary">Profile</a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item ms-2">
+                            <div class="dropdown text-end">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown"
+                                    style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(-135px, 34px);">
+                                    <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                {% else %}
+                    <ul class="navbar-nav mb-2 mb-lg-0 text-end">
+                        <li class="nav-item ms-2">
+                            <a class="btn btn-primary" href="/login">Login</a>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <a class="btn btn-primary" href="/signup">Signup</a>
+                        </li>
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+{% block content %}
+    <div class="row mt-3">
+        <div class="col-lg-6">
+            <h4>New Tested Users</h4>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-lg-6">
+            <div class="table-wrapper">
+                <table class="table table-borderless">
+                    <tbody>
+                    {% for user in new_users %}
+                        <tr>
+                            <td>
+                                {{ user.username }}
+                            </td>
+                            <td>
+                                Test Date: {{ user.test_results[0].test_date.strftime("%d.%m.%Y %H:%M") }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

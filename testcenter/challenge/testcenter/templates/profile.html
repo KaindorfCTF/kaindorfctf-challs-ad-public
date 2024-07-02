@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block nav %}
+    <nav class="navbar navbar-expand navbar-dark fixed-top bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                TestCentral
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-flex flex-row-reverse" id="navbarSupportedContent">
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item ms-2">
+                        <div class="dropdown text-end">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown"
+                                style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(-135px, 34px);">
+                                <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+{% block content %}
+    <div class="row mt-3">
+        <div class="col-lg-8 offset-lg-2">
+            <h3>Your Test Results</h3>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-lg-8 offset-lg-2">
+            <table class="table table-borderless" id="test-table">
+                <tbody>
+                {% for testresult in user.test_results %}
+                    <tr>
+                        <td>
+                            {{ testresult.id }}
+                        </td>
+                        <td>
+                            {{ testresult.test_type }}
+                        </td>
+                        <td>
+                            {{ testresult.result }}
+                        </td>
+                        <td>
+                            {{ testresult.test_date }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

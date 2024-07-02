@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flago</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Flago - Hello {{.Username}}!</h2>
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-danger text-white">Add Note</div>
+                <div class="card-body">
+                    <form action="/addNote" method="POST">
+                        <div class="mb-3">
+                            <input type="text" id="note" name="note" class="form-control" placeholder="Note">
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" id="password" name="password" class="form-control" placeholder="Password">
+                        </div>
+                        <div class="text-center">
+                            <input type="submit" value="Add Note" class="btn btn-danger">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">Get Notes</div>
+                <div class="card-body">
+                    <form action="/getNotes" method="GET">
+                        <div class="mb-3">
+                            <input type="password" id="get-password" name="password" class="form-control" placeholder="Password">
+                        </div>
+                        <div class="text-center">
+                            <input type="submit" value="Get Notes" class="btn btn-primary">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

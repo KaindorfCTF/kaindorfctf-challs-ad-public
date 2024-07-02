@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  web:
+    container_name: tetcenter-web
+    build: .
+    volumes:
+      - ./testcenter:/app/testcenter
+    ports:
+      - "84:5000"
+    depends_on:
+      - db
+    environment:
+      - PG_Host=testcenter-db
+      - PG_User=postgres
+      - PG_Password=postgres
+      - PG_DB=testcenter
+    networks:
+      - testcenter_net
+
+  db:
+    container_name: testcenter-db
+    image: postgres:13-alpine
+    volumes:
+      - ./postgres:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=testcenter
+    networks:
+      - testcenter_net
+
+networks:
+  testcenter_net:
+    name: testcenter_net

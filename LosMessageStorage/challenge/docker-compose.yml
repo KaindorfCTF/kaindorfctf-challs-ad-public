@@ -1,0 +1,53 @@
+version: "3"
+
+services:
+  frontend:
+    container_name: messagestorage-front
+    build:
+      context: .
+      dockerfile: "Dockerfile.frontend"
+    ports:
+      - 83:1337
+    networks:
+      - lms_net
+    # Security releated options
+    user: 1337:1337
+    privileged: false
+    read_only: true
+
+  postgres_db:
+    container_name: messagestorage-database
+    image: postgres:16.2-alpine3.19
+    restart: always
+    # set shared memory limit when using docker-compose
+    shm_size: 128mb
+    volumes:
+      - ./postgres:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: lms_user
+      POSTGRES_PASSWORD: lms_password
+      POSTGRES_DB: lms
+    networks:
+      - lms_net
+
+  api:
+    container_name: messagestorage-api
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    depends_on:
+      - postgres_db 
+    environment:
+     PG_Host: postgres_db
+     PG_User: lms_user
+     PG_Password: lms_password
+     PG_DB: lms
+    volumes:
+      - ./api:/app/api
+    networks:
+      - lms_net
+
+networks:
+  lms_net:
+    name: lms_net 

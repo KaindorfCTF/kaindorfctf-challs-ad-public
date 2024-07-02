@@ -1,0 +1,9 @@
+
+endpoint   --   method   --   payload   --   wanted retval
+
+/login -- POST -- {"username":"username", "password":"password"} -- 0 if creds valid and it is an admin, 1 if creds valid and is a user, 2 if creds invalid (user not existing or password incorrect)
+/register -- POST -- {"username":"username", "password":"password"} -- 0 if successful, 1 if user already exists
+/setmessage -- POST -- {"username":"username", "message":"message"} (message max 0x200-0x300 bytes) -- 0 if successful, 1 if user nonexistent (should not happen normally)
+/getmessage -- POST -- {"username":"username", "isadmin":"False"} -- saved message of that user if isadmin==False, if isadmin==True: the message of the admin (admin flag)
+
+probably also need an endpoint for us to place the flag -> some form of authentication or password that wont be guessed, unique to each service

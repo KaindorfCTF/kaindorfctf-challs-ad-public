@@ -1,0 +1,30 @@
+FROM debian:bookworm-slim as builder
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y update; \
+    apt-get -y install \
+        gcc \
+        make \
+        curl \
+    ;
+
+WORKDIR /app
+
+COPY frontend/main.c .
+COPY frontend/Makefile .
+
+RUN make
+
+FROM debian:bookworm-slim
+
+EXPOSE 1337
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y update; \
+    apt-get -y install \
+        socat curl \
+    ;
+
+COPY --from=builder /app/vuln /app/vuln
+
+CMD socat \
+    TCP-LISTEN:1337,nodelay,reuseaddr,fork \
+    EXEC:"/app/vuln"

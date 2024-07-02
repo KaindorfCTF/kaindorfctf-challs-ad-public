@@ -1,0 +1,132 @@
+{% extends "layout.html" %}
+{% block nav %}
+    <nav class="navbar navbar-expand navbar-dark fixed-top bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                TestCentral
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-flex flex-row-reverse" id="navbarSupportedContent">
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item ms-2">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#addTestResultModal">Add Test Result
+                        </button>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#addTrustedModal">Add Trusted Keys
+                        </button>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <div class="dropdown text-end">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown"
+                                style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(-135px, 34px);">
+                                <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+{% block content %}
+    <div class="row mt-3">
+        <div class="col-lg-8 offset-lg-2">
+            <h3>Users</h3>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-lg-8 offset-lg-2">
+            <table class="table table-borderless">
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>
+                            {{ user.id }}
+                        </td>
+                        <td>
+                            {{ user.username }}
+                        </td>
+                        <td>
+                            <a href="/profile/{{ user.id }}" class="btn btn-primary">Profile</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% if current_user.is_admin %}
+        <!-- Modal -->
+        <div class="modal fade" id="addTrustedModal" tabindex="-1" aria-labelledby="addTrustedModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="/api/trustedkeys/add" method="POST" enctype="multipart/form-data">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addTrustedModalLabel">Add Trusted Keys</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="inputPublicKey" class="form-label">Public Key</label>
+                                <input type="file" class="form-control" id="inputPublicKey" name="pub">
+                            </div>
+                            <div class="mb-3">
+                                <label for="inputPrivateKey" class="form-label">Private Key</label>
+                                <input type="file" class="form-control" id="inputPrivateKey" name="priv">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="addTestResultModal" tabindex="-1" aria-labelledby="addTestResultModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="/api/test/add" method="POST">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addTestResultModalLabel">Add Test Result</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="inputUser" class="form-label">User</label>
+                                <select class="form-select" id="inputUser" name="user">
+                                    {% for user in users %}
+                                        <option id="user-{{ user.id }}"
+                                                value="{{ user.id }}">{{ user.username }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="inputTestType" class="form-label">Type</label>
+                                <input type="text" class="form-control" id="inputTestType" name="type">
+                            </div>
+                            <div class="mb-3">
+                                <label for="inputTestResult" class="form-label">Result</label>
+                                <input type="text" class="form-control" id="inputTestResult" name="result">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
